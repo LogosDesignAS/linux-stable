@@ -189,7 +189,7 @@
 		};
 	    */
 
-        pinctrl_ecspi1: ecspi1grp {
+        pinctrl_ecspi1: ecspi1grp { // TODO: CTP Checked
             fsl,pins = <
                 MX6QDL_PAD_EIM_D17__ECSPI1_MISO		0x100b1
 				MX6QDL_PAD_EIM_D18__ECSPI1_MOSI		0x100b1
@@ -332,43 +332,29 @@
         };
         */
 
-        pinctrl_sgtl5000: sgtl5000grp {
-            fsl,pins = <
-                    MX6QDL_PAD_GPIO_0__CCM_CLKO1		0x000b0
-				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x1b0b0
-			>;
-        };
-
-        pinctrl_uart1: uart1grp {
-            fsl,pins = <
-                MX6QDL_PAD_SD3_DAT7__UART1_TX_DATA	0x1b0b1
-				MX6QDL_PAD_SD3_DAT6__UART1_RX_DATA	0x1b0b1
-			>;
-        };
-
-        pinctrl_uart2: uart2grp {
+        pinctrl_uart2: uart2grp { // TODO: CTP inserted - SER1 on schematics
             fsl,pins = <
                 MX6QDL_PAD_EIM_D26__UART2_TX_DATA	0x1b0b1
 				MX6QDL_PAD_EIM_D27__UART2_RX_DATA	0x1b0b1
 			>;
         };
 
-        pinctrl_uart3: uart3grp {
-            fsl,pins = <
-                MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
-				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
-				MX6QDL_PAD_EIM_D23__UART3_CTS_B		0x1b0b1
-				MX6QDL_PAD_EIM_D31__UART3_RTS_B		0x1b0b1
-			>;
-        };
-
-        pinctrl_uart4: uart4grp { // CTP inserted
+        pinctrl_uart4: uart4grp { // TODO: CTP inserted - SER0 on schematics
             fsl,pins = <
                 MX6QDL_PAD_CSI0_DAT12__UART4_RX_DATA	0x1b0b1
 				MX6QDL_PAD_CSI0_DAT13__UART4_TX_DATA	0x1b0b1
-				MX6QDL_PAD_CSI0_DAT17__UART4_CTS_B		0x1b0b1
 				MX6QDL_PAD_CSI0_DAT16__UART4_RTS_B		0x1b0b1
+				MX6QDL_PAD_CSI0_DAT17__UART4_CTS_B		0x1b0b1
 			>;
+        };
+
+        pinctrl_uart5: uart5grp { // TODO: CTP inserted - SER2 on schematics
+            fsl,pins = <
+            MX6QDL_PAD_CSI0_DAT14__UART5_TX_DATA	0x1b0b1
+            MX6QDL_PAD_CSI0_DAT14__UART5_RX_DATA	0x1b0b1
+            MX6QDL_PAD_CSI0_DAT18__UART5_RTS_B	0x1b0b1
+            MX6QDL_PAD_CSI0_DAT19__UART5_CTS_B	0x1b0b1
+            >;
         };
 
         /*
@@ -633,28 +619,22 @@
 };
 */
 
-&uart1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart1>;
-	status = "okay";
-};
-
 &uart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
 	status = "okay";
 };
 
-&uart3 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_uart3>;
-	uart-has-rtscts;
-	status = "okay";
-};
-
 &uart4 { // CTP inserted
     pinctrl-names = "default";
     pinctrl-0 = <&pinctrl_uart4>;
+    uart-has-rtscts;
+    status = "okay";
+};
+
+&uart5 { // CTP inserted
+    pinctrl-names = "default";
+    pinctrl-0 = <&pinctrl_uart5>;
     uart-has-rtscts;
     status = "okay";
 };

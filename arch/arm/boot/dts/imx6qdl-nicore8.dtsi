@@ -97,11 +97,13 @@
 				>;
 			};
 
+		/*
 		pinctrl_usbotgvbus: usbotgvbusgrp {
 			fsl,pins = <
 				MX6QDL_PAD_KEY_ROW4__GPIO4_IO15		0x130b0
 			>;
 		};
+		*/
 
 		pinctrl_enet: enetgrp {
 			fsl,pins = <
@@ -126,7 +128,6 @@
 				MX6QDL_PAD_ENET_TX_EN__GPIO1_IO28	0x1b0b0
 			>;
 		};
-
 
 		pinctrl_i2c2: i2c2grp {
 			fsl,pins = <
@@ -173,8 +174,8 @@
 		/* SER0 on schematics */
 		pinctrl_uart4: uart4grp {
 			fsl,pins = <
-			       MX6QDL_PAD_CSI0_DAT12__UART4_RX_DATA	0x1b0b1
-			       MX6QDL_PAD_CSI0_DAT13__UART4_TX_DATA	0x1b0b1
+			       MX6QDL_PAD_CSI0_DAT12__UART4_TX_DATA	0x1b0b1
+			       MX6QDL_PAD_CSI0_DAT13__UART4_RX_DATA	0x1b0b1
 			       MX6QDL_PAD_CSI0_DAT17__UART4_CTS_B	0x1b0b1
 			       MX6QDL_PAD_CSI0_DAT16__UART4_RTS_B	0x1b0b1
 			>;

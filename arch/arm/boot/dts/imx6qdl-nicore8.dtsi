@@ -120,8 +120,8 @@
 				MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b030
 				MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b030
 				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x130b0
-				MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25	0x130b0 // RGMII_nRST
-				MX6QDL_PAD_ENET_RXD0__GPIO1_IO27	0x000b1 // RGMII_INT
+				//MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25	0x130b0 // RGMII_nRST
+				MX6QDL_PAD_ENET_RXD0__GPIO1_IO27	0x180b0 // RGMII_INT
 /*
 				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
 				MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
@@ -270,9 +270,9 @@
                 phy: ethernet-phy@4 {
                         reg = <4>;
                         interrupts-extended = <&gpio1 27 IRQ_TYPE_LEVEL_LOW>;
-                        reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+                        //reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
                         reset-assert-us = <10000>;
-                        reset-deassert-us = <1000>;
+                        reset-deassert-us = <10000>;
                         qca,smarteee-tw-us-1g = <24>;
                         qca,clk-out-frequency = <125000000>;
                 };

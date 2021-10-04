@@ -24,6 +24,11 @@
 		usb0 = &usbotg;
 		usb1 = &usbh1;
 		ethernet0 = &fec;
+        //backlight_lvds = &backlight_lvds;
+        fb_lvds = &fb_lvds;
+        ldb = &ldb;
+        mxcfb0 = &fb_lvds;
+        //pwm_lvds = &pwm4;
 	};
 
 	leds {
@@ -49,7 +54,71 @@
 		};
 	};
 
-	regulators {
+    /*
+    backlight_lvds: backlight-lvds {
+        compatible = "pwm-backlight";
+        pwms = <&pwm4 0 5000000>; // MX6QDL_PAD_KEY_ROW0__GPIO4_IO07 - DISP_BKLT_PWM
+
+        brightness-levels = <0 4 8 16 32 64 128 255>;
+        default-brightness-level = <8>;
+
+        //display = <&fb_lvds>;
+        power-supply = <&reg_3p3v>;
+        enable-gpios = <&gpio 4 6>; // MX6QDL_PAD_KEY_COL0__GPIO4_IO06 - DISP_VDD_EN
+        status = "okay";
+    };
+    */
+
+    // LVDS frame buffer node - binding to MXC graphics driver
+    fb_lvds: fb@0 {
+        compatible = "fsl,mxc_sdc_fb";
+        disp_dev = "ldb";
+        interface_pix_fmt = "RGB24";
+        default_bpp = <32>;
+        int_clk = <0>;
+        late_init = <0>;
+        status = "okay";
+    };
+
+    // SHARP LQ121 12.1"
+    /*
+    panel_lvds0 {
+        compatible = "sharp,lq121s1lg86";
+        backlight = <&backlight_lvds>;
+        port {
+            panel_in: endpoint {
+                remote-endpoint = <&lvds0_out>;
+            };
+        };
+    };
+    */
+
+    // LVDS Display Bridge - interface of the i.MX6 CPU that connects the IPU to an external LVDS display interface
+    ldb@020e0000 {
+        status = "okay";
+        lvds-channel@0 {
+            crtc = "ipu1-di0";
+            fsl,data-mapping = "jeida";
+            fsl,data-width = <24>; // TODO: ? 18-bit 262144 colors.
+            primary;
+            status = "okay";
+
+            native-mode = <&timing0>;
+            timing0: lq121s1lg86 {
+                clock-frequency = <40000000>;
+                hactive = <800>;
+                vactive = <600>;
+                hfront-porch = <246>; // TH - THd = 1056 - 800 = 256 - 10 (hsync-len) = 246
+                hback-porch = <0>;
+                hsync-len = <10>; // Not mentioned in datasheet, driver does not allow 0.
+                vback-porch = <0>;
+                vfront-porch = <56>; // TV - TVd = 666 - 600 = 66 - 10 (vsync-len) =  56
+                vsync-len = <10>; // Not mentioned in datasheet, driver does not allow 0.
+            };
+        };
+    };
+
+    regulators {
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -201,6 +270,33 @@
 				MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
 			>;
 		};
+
+        /* TODO: CTP We need to verify HW mapping first
+        pinctrl_pwm1: pwm1grp {
+            fsl,pins = <
+            MX6QDL_PAD_SD1_DAT3__PWM1_OUT           0x1b0b1
+            >;
+        };
+
+        pinctrl_pwm2: pwm2grp {
+            fsl,pins = <
+            MX6QDL_PAD_SD1_DAT3__PWM1_OUT           0x1b0b1
+            >;
+        };
+
+        pinctrl_pwm3: pwm3grp {
+            fsl,pins = <
+            MX6QDL_PAD_SD1_DAT1__PWM3_OUT           0x1b0b1
+            >;
+        };
+
+        pinctrl_pwm4: pwm4grp {
+            fsl,pins = <
+            MX6QDL_PAD_SD1_CMD__PWM4_OUT            0x1b0b1
+            >;
+        };
+        */
+
 	};
 };
 
@@ -259,7 +355,7 @@
             // VDD_CORE
             sw1a_reg: sw1ab {
                 regulator-min-microvolt = <300000>;
-                regulator-max-microvolt = <1875000>; // Check this, ds says 1375000
+                regulator-max-microvolt = <1375000>;
                 regulator-boot-on;
                 regulator-always-on;
                 regulator-ramp-delay = <6250>;
@@ -268,7 +364,7 @@
             // VDD_SOC
             sw1c_reg: sw1c {
                 regulator-min-microvolt = <300000>;
-                regulator-max-microvolt = <1875000>; // Check this, ds says 1375000
+                regulator-max-microvolt = <1375000>;
                 regulator-boot-on;
                 regulator-always-on;
                 regulator-ramp-delay = <6250>;
@@ -285,7 +381,7 @@
             // DDR_1V35
             sw3a_reg: sw3a {
                 regulator-min-microvolt = <400000>;
-                regulator-max-microvolt = <1350000>; // Check this, everyone has 1975000
+                regulator-max-microvolt = <1350000>;
                 regulator-boot-on;
                 regulator-always-on;
             };

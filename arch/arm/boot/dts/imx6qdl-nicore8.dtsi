@@ -35,7 +35,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_leds>;
 
-		compatible = "gpio-leds";
+		compatible = "gqpio-leds";
 
 		/* LED1 on schematic, LED2 on board */
 		led1 {

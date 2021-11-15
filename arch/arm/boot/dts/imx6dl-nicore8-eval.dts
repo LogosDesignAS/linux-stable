@@ -13,3 +13,24 @@
 	model = "Logos i.MX6 Solo NiCore8 evaluation board";
 	compatible = "logos,imx6dl-nicore8", "fsl,imx6dl";
 };
+
+/* USDHC1, SD Card */
+&usdhc1 {
+        pinctrl-names = "default";
+        bus-width = <4>;
+        pinctrl-0 = <&pinctrl_usdhc1_50mhz>;
+        cd-gpios = GP_SD_CD;
+        //wp-gpios = GP_USDHC1_WP;
+        //vmmc-supply = <&reg_sd_vbus>;
+        status = "okay";
+};
+
+/* USDHC3, eMMC */
+&usdhc3 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_usdhc3_50mhz>;
+        vmmc-supply = <&reg_3p3v>;
+        bus-width = <8>;
+        non-removable;
+        status = "okay";
+};

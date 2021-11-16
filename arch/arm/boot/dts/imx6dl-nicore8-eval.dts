@@ -18,19 +18,19 @@
 &usdhc1 {
         pinctrl-names = "default";
         bus-width = <4>;
-        pinctrl-0 = <&pinctrl_usdhc1_50mhz>;
-        cd-gpios = GP_SD_CD;
-        //wp-gpios = GP_USDHC1_WP;
-        //vmmc-supply = <&reg_sd_vbus>;
+        pinctrl-0 = <&pinctrl_usdhc1>;
+        vmmc-supply = <&reg_sdio_pwr>;
+        cd-gpios = <&gpio6 14 GPIO_ACTIVE_LOW>;
+	no-1-8-v;
         status = "okay";
 };
 
 /* USDHC3, eMMC */
 &usdhc3 {
         pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_usdhc3_50mhz>;
-        vmmc-supply = <&reg_3p3v>;
         bus-width = <8>;
+        pinctrl-0 = <&pinctrl_usdhc3>;
+        vmmc-supply = <&reg_3p3v>;
         non-removable;
         status = "okay";
 };

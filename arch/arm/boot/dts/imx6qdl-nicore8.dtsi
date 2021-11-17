@@ -21,9 +21,20 @@
 		mmc0 = &usdhc4; // eMMC on NiCore8
 		mmc1 = &usdhc3; // eMMC on carrier
 		mmc2 = &usdhc1; // SD card on carrier
+
 		usb0 = &usbotg;
 		usb1 = &usbh1;
+
 		ethernet0 = &fec;
+
+		// I2C labels follows naming on schematics, aliases below keeps it simple
+		i2c1 = &i2c2;
+		i2c2 = &i2c3;
+		i2c3 = &i2c4;
+		i2c4 = &i2c_lcd;
+		i2c5 = &i2c_hdmi;
+		i2c6 = &i2c_gp;
+		i2c7 = &i2c_cam;
 
         	//backlight_lvds = &backlight_lvds;
         	fb_lvds = &fb_lvds;
@@ -392,15 +403,6 @@
 	};
 };
 
-/* TODO
-&i2c1 {
-	pinctrl-names = "default";
-	clock-frequency = <100000>;
-	pinctrl-0 = <&pinctrl_i2c1>;
-	status = "okay";
-};
-*/
-
 &i2c2 {
 	clock-frequency = <100000>;
 	pinctrl-names = "default";
@@ -498,14 +500,7 @@
                 regulator-always-on;
             };
         };
-    };
-};
-
-&i2c3 {
-	pinctrl-names = "default";
-	clock-frequency = <100000>;
-	pinctrl-0 = <&pinctrl_i2c3>;
-	status = "okay";
+	};
 
 	// As described in SMARC_Hardware_Specification_V1p1.pdf
 	// SMARC Modules shall include an I2C serial EEPROM
@@ -521,18 +516,51 @@
         };
 };
 
+&i2c3 {
+	pinctrl-names = "default";
+	clock-frequency = <100000>;
+	pinctrl-0 = <&pinctrl_i2c3>;
+	status = "okay";
+
+	// PCA9546ABS I2C multiplexer
+	i2c-switch@70 {
+		compatible = "nxp,pca9546";
+                reg = <0x70>;
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                i2c_lcd: i2c@0 {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <0>;
+                };
+
+                i2c_hdmi: i2c@1 {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <1>;
+                };
+
+                i2c_gp: i2c@2 {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <2>;
+                };
+
+                i2c_cam: i2c@3 {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <3>;
+                };
+
+	};
+};
+
 &i2c4 {
 	pinctrl-names = "default";
 	clock-frequency = <100000>;
 	pinctrl-0 = <&pinctrl_i2c4>;
 	status = "okay";
-
-	/* TODO: No driver in kernel for this one?
-	fram@51 {
-                compatible = "cypress,fm24cl04b";
-                reg = <0x51>;
-	}
-	*/
 };
 
 &uart2 {
